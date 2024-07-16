@@ -1,5 +1,6 @@
 import { React } from "react";
 import { styled, keyframes } from "styled-components";
+import X from "../asset/img/X.png";
 
 export const DirectInput = ({ handleModalD }) => {
   return (
@@ -8,7 +9,7 @@ export const DirectInput = ({ handleModalD }) => {
         <InnerBox>
           <InnerHead>
             <Wlrwjq>직접 입력</Wlrwjq>
-            <TheX onClick={handleModalD}>X</TheX>
+            <TheX src={X} onClick={handleModalD} />
           </InnerHead>
           <MinerDiv>
             <NamePrice>
@@ -85,9 +86,9 @@ const Wlrwjq = styled.p`
   letter-spacing: -1px;
 `;
 
-const TheX = styled.p`
-  font-size: 30px;
-  font-weight: 700;
+const TheX = styled.img`
+  width: 19px;
+  height: 19px;
   cursor: pointer;
 `;
 
