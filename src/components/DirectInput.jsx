@@ -8,7 +8,7 @@ export const DirectInput = ({ handleModalD }) => {
       <ModalBox>
         <InnerBox>
           <InnerHead>
-            <Wlrwjq>직접 입력</Wlrwjq>
+            <Title>직접 입력</Title>
             <TheX src={X} onClick={handleModalD} />
           </InnerHead>
           <MinerDiv>
@@ -79,7 +79,7 @@ const InnerHead = styled.div`
   margin-bottom: 27px;
 `;
 
-const Wlrwjq = styled.p`
+const Title = styled.p`
   color: #000;
   font-size: 30px;
   font-weight: 600;
@@ -150,11 +150,11 @@ const Cancel = styled.button`
 const Add = styled.button`
   width: 104px;
   height: 50px;
-  border: 1px solid #3443be;
-  background-color: #3443be;
+  border: none;
+  background-color: #4A68D9;
   color: #fff;
   font-size: 14px;
   font-weight: 700;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: pointer;  
 `;

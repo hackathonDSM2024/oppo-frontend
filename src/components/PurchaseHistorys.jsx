@@ -4,13 +4,13 @@ import { AHistory } from "./AHistory";
 const PurchaseHistorys = () => {
   return (
     <Container>
-      <AHistory ii="직접 입력" jj="맥북 프로 14" kk="100,000원" />
-      <AHistory ii="챗봇 구매" jj="크리스피 허니 눈꽃 쌀과자" kk="100,000원" />
-      <AHistory ii="챗봇 포기" jj="크리스피 허니 눈꽃 쌀과자" kk="100,000원" />
-      <AHistory ii="챗봇 구매" jj="삼립약과" kk="1,000원" />
-      <AHistory ii="챗봇 구매" jj="라즈베리 파이" kk="10,000,000원" />
-      <AHistory ii="직접 입력" jj="삼다수" kk="10,000원" />
-      <AHistory ii="챗봇 구매" jj="충전기" kk="500,000원" />
+      <AHistory State="직접 입력" ProductName="맥북 프로 14" Price="100,000원" />
+      <AHistory State="챗봇 구매" ProductName="크리스피 허니 눈꽃 쌀과자" Price="100,000원" />
+      <AHistory State="챗봇 포기" ProductName="크리스피 허니 눈꽃 쌀과자" Price="100,000원" />
+      <AHistory State="챗봇 구매" ProductName="삼립약과" Price="1,000원" />
+      <AHistory State="챗봇 구매" ProductName="라즈베리 파이" Price="10,000,000원" />
+      <AHistory State="직접 입력" ProductName="삼다수" Price="10,000원" />
+      <AHistory State="챗봇 구매" ProductName="충전기" Price="500,000원" />
     </Container>
   );
 };

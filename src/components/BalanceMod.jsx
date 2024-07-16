@@ -8,7 +8,7 @@ export const BalanceMod = ({ handleModalB }) => {
       <ModalBox>
         <InnerBox>
           <InnerHead>
-            <Wlrwjq>잔고 수정</Wlrwjq>
+            <Title>잔고 수정</Title>
             <TheX src={X} onClick={handleModalB} />
           </InnerHead>
           <MinerDiv>
@@ -75,7 +75,7 @@ const InnerHead = styled.div`
   margin-bottom: 27px;
 `;
 
-const Wlrwjq = styled.p`
+const Title = styled.p`
   color: #000;
   font-size: 30px;
   font-weight: 600;
@@ -146,8 +146,8 @@ const Cancel = styled.button`
 const Mod = styled.button`
   width: 104px;
   height: 50px;
-  border: 1px solid #3443be;
-  background-color: #3443be;
+  border: none;
+  background-color: #4A68D9;
   color: #fff;
   font-size: 14px;
   font-weight: 700;

@@ -66,7 +66,7 @@ const ChatBot = () => {
       </ChatterBox>
       <Answer>
         <Text ref={textRef} />
-        <Button></Button>
+        <Button>send</Button>
       </Answer>
     </Container>
   );
