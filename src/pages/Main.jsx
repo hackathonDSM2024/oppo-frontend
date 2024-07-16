@@ -1,12 +1,17 @@
 // 내역 보기 페이지
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { styled } from "styled-components";
 import { BalanceMod } from "../components/BalanceMod";
 import { DirectInput } from "../components/DirectInput";
 import PurchaseHistorys from "../components/PurchaseHistorys";
+import { http } from "../util/net";
+import { getBalance } from "../service/net/getBalance";
 
 const MainPage = () => {
+  const [userBalance, setUserBalance] = useState(0);
+
+  // Modal State
   const [onBalanceModi, setOnB] = useState(false);
   const [onDirectModi, setOnD] = useState(false);
 
@@ -17,13 +22,25 @@ const MainPage = () => {
   const handleModalB = () => {
     setOnB(!onBalanceModi);
   };
+
+  useEffect(() => {
+    getBalance()
+    .then((data) => {
+      setUserBalance(data)
+    })
+    .catch((err) => {
+      alert(err)
+    })
+  }, [])
+
   return (
     <Container>
       <CenterBox>
         <Headers>
           <HeadBox>
             <PurchaseHistory>구매내역</PurchaseHistory>
-            <MyBalance>현재 잔고: 100,000,000원</MyBalance>
+            <MyBalance>현재 잔고: {userBalance ?? 0}원
+            </MyBalance>
           </HeadBox>
           <Buttons>
             <ModOrDirect onClick={handleModalB}>잔고 수정</ModOrDirect>
@@ -31,7 +48,7 @@ const MainPage = () => {
             <NewChatStart>새 채팅 시작하기</NewChatStart>
           </Buttons>
         </Headers>
-        <PurchaseHistorys />
+        <PurchaseHistorys histories={[]} />
       </CenterBox>
       {onDirectModi ? <DirectInput handleModalD={handleModalD} /> : null}
       {onBalanceModi ? <BalanceMod handleModalB={handleModalB} /> : null}
