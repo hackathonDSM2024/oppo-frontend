@@ -10,7 +10,8 @@ const StartChatBot = () => {
   const handleStartChat = () => {
     // 사용자 입력 정보로 새 채팅방 생성
     console.log('Username:', name);
-
+    // 브랜치 아작난거 고치기 위한 push
+    console.log("")
   };
 
   return (
