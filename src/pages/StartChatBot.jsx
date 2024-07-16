@@ -19,8 +19,6 @@ const StartChatBot = () => {
 
   const handleStartChat = () => {
     // 사용자 입력 정보로 새 채팅방 생성
-    console.log('Username:', username);
-    console.log('Room Name:', roomName);
   };
 
   return (
