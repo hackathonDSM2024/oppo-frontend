@@ -1,9 +1,22 @@
 // 내역 보기 페이지
 import React from "react";
+import { useState } from "react";
 import { styled } from "styled-components";
+import { BalanceMod } from "../components/BalanceMod";
+import { DirectInput } from "../components/DirectInput";
 import PurchaseHistorys from "../components/PurchaseHistorys";
 
 const MainPage = () => {
+  const [onBalanceModi, setOnB] = useState(false);
+  const [onDirectModi, setOnD] = useState(false);
+
+  const handleModalD = () => {
+    setOnD(!onDirectModi);
+  };
+
+  const handleModalB = () => {
+    setOnB(!onBalanceModi);
+  };
   return (
     <Container>
       <CenterBox>
@@ -13,13 +26,15 @@ const MainPage = () => {
             <MyBalance>현재 잔고: 100,000,000원</MyBalance>
           </HeadBox>
           <Buttons>
-            <ModOrDirect>잔고 수정</ModOrDirect>
-            <ModOrDirect>직접 입력</ModOrDirect>
+            <ModOrDirect onClick={handleModalB}>잔고 수정</ModOrDirect>
+            <ModOrDirect onClick={handleModalD}>직접 입력</ModOrDirect>
             <NewChatStart>새 채팅 시작하기</NewChatStart>
           </Buttons>
         </Headers>
         <PurchaseHistorys />
       </CenterBox>
+      {onDirectModi ? <DirectInput handleModalD={handleModalD} /> : null}
+      {onBalanceModi ? <BalanceMod handleModalB={handleModalB} /> : null}
     </Container>
   );
 };
