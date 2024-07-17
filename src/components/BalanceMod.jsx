@@ -1,8 +1,38 @@
-import { React } from "react";
+import { React, useState } from "react";
 import { styled, keyframes } from "styled-components";
 import X from "../asset/img/X.png";
+import { http } from "../util/net";
 
 export const BalanceMod = ({ handleModalB }) => {
+  const [newBalance, setNewBalance] = useState(0)
+
+  const handleChangeInput = (e) => {
+    if (!e.target.value) {
+      return
+    }
+
+    setNewBalance(e.target.value)
+  }
+  const handleUpdateBalance = (e) => {
+    if(!newBalance) {
+      return
+    }
+
+    http.patch("/balance", {
+      balance: newBalance
+    })
+    .then((res) => {
+      alert("잔고 수정 완료!")
+    })
+    .catch((err) => {
+      alert(err.message)
+    })
+    .finally(() => {
+      handleModalB()
+      window.location.reload()
+    })
+  }
+
   return (
     <Container>
       <ModalBox>
@@ -14,12 +44,12 @@ export const BalanceMod = ({ handleModalB }) => {
           <MinerDiv>
             <NamePrice>
               <NP>잔고 (단위: 원)</NP>
-              <NPInput type="text" placeholder="새 잔고를 입력해주세요." />
+              <NPInput type="text" placeholder="새 잔고를 입력해주세요." onChange={handleChangeInput}/>
             </NamePrice>
           </MinerDiv>
           <ButtonBox>
             <Cancel onClick={handleModalB}>취소</Cancel>
-            <Mod onClick={handleModalB}>수정</Mod>
+            <Mod onClick={handleUpdateBalance}>수정</Mod>
           </ButtonBox>
         </InnerBox>
       </ModalBox>
@@ -125,7 +155,7 @@ const NPInput = styled.input`
 `;
 
 const ButtonBox = styled.div`
-  width: 549px;
+  width: 515px;
   display: flex;
   justify-content: flex-end;
   gap: 23px;

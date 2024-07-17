@@ -1,8 +1,43 @@
-import { React } from "react";
+import { React, useState } from "react";
 import { styled, keyframes } from "styled-components";
 import X from "../asset/img/X.png";
+import { CreatePurchase } from "../service/net/createPurchase"
 
 export const DirectInput = ({ handleModalD }) => {
+  const [formState, setFormState] = useState({
+    name: '',
+    price: 0,
+    description: ''
+  })
+
+  const handleCreatePurchase = () => {
+    CreatePurchase({
+      name: formState.name,
+      price: formState.price,
+      description: formState.description
+    })
+    .catch((err) => {
+      alert(err)
+    })
+    .finally(() => {
+      window.location.reload()
+      alert("물건 리스트 추가 완료!")
+      handleModalD()
+    })
+  }
+
+  const handleForm = (type, e) => {
+    const value = e.target.value;
+
+    if (type === "name") {
+      setFormState((prev) => ({...prev, name: value }));
+    } else if (type === "price") {
+      setFormState((prev) => ({...prev, price: value }));
+    } else {
+      setFormState((prev) => ({...prev, description: value }));
+    }
+  };
+
   return (
     <Container>
       <ModalBox>
@@ -14,16 +49,20 @@ export const DirectInput = ({ handleModalD }) => {
           <MinerDiv>
             <NamePrice>
               <NP>물건 이름</NP>
-              <NPInput type="text" placeholder="물건의 이름을 입력해주세요." />
+              <NPInput placeholder="물건의 이름을 입력해주세요." onChange={(e) => handleForm("name", e)} value={formState.name}/>
             </NamePrice>
             <NamePrice>
               <NP>물건 가격</NP>
-              <NPInput type="text" placeholder="물건의 가격을 입력해주세요." />
+              <NPInput type="number" placeholder="물건의 가격을 입력해주세요." onChange={(e) => handleForm("price", e)} value={formState.price}/>
+            </NamePrice>
+            <NamePrice>
+              <NP>물건 특징</NP>
+              <NPInput placeholder="물건의 특징을 입력해주세요." onChange={(e) => handleForm("description", e)} value={formState.description}/>
             </NamePrice>
           </MinerDiv>
           <ButtonBox>
             <Cancel onClick={handleModalD}>취소</Cancel>
-            <Add onClick={handleModalD}>추가</Add>
+            <Add onClick={handleCreatePurchase}>추가</Add>
           </ButtonBox>
         </InnerBox>
       </ModalBox>
@@ -54,7 +93,7 @@ const Container = styled.div`
 
 const ModalBox = styled.div`
   width: 526px;
-  height: 421px;
+  height: auto;
   display: flex;
   background-color: #fff;
   border-radius: 8px;
@@ -129,7 +168,7 @@ const NPInput = styled.input`
 `;
 
 const ButtonBox = styled.div`
-  width: 549px;
+  width: 515px;
   display: flex;
   justify-content: flex-end;
   gap: 23px;

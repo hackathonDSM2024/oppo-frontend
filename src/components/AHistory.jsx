@@ -1,8 +1,9 @@
+import { useId } from "react";
 import { styled } from "styled-components";
 
-export const AHistory = ({ State, ProductName, Price }) => {
+export const AHistory = ({ Id, State, ProductName, Price }) => {
   return (
-    <Container>
+    <Container key={Id}>
       <ItemBox>
         <ItemName>{ProductName}</ItemName>
         <ItemPrice>| {Price}</ItemPrice>
@@ -52,17 +53,17 @@ const Record = styled.div`
   width: 68px;
   height: 26px;
   background-color: ${(props) =>
-    props.State === "챗봇 포기"
+    props.State === "CHAT_GIVE_UP"
       ? "#fff0f0"
-      : props.State === "챗봇 구매"
+      : props.State === "CHAT_PURCHASE"
       ? "#ecf9fe"
       : "#eeeeee"};
   font-size: 12px;
   font-weight: 500;
   color: ${(props) =>
-    props.State === "챗봇 포기"
+    props.State === "CHAT_GIVE_UP"
       ? "#c23535"
-      : props.State === "챗봇 구매"
+      : props.State === "CHAT_PURCHASE"
       ? "#0c408b"
       : "#202020"};
   border-radius: 13px;
