@@ -19,8 +19,11 @@ const CreateChat = () => {
       name,
       price,
       description
-    })
-   navigate("/chatBot");
+    }).then((res) => {
+      navigate(`/chatBot/${res.id}`);
+    }).catch((err) => {
+      console.error(err);
+    });
   };
 
   return (
@@ -95,7 +98,7 @@ const InputField = styled.input`
     margin-bottom: 1rem;
     font-size: 1rem;
   `;
-  const ThirdInputField = styled.textarea`
+const ThirdInputField = styled.textarea`
   width: 512px;
   height: 197px;
   padding: 0.5rem;
