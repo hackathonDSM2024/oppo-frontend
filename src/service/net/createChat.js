@@ -1,6 +1,6 @@
 import { http } from "../../util/net"
 
-export const CreateChat = ({ name, price, description }) => {
+export const createChat = ({ name, price, description }) => {
     return http.post("/chat", {
         name,
         price,

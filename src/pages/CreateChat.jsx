@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { createChat } from '../service/net/createChat';
+import { useNavigate } from 'react-router-dom';
 
 
 const CreateChat = () => {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [feature, setFeature] = useState('');
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState("");
+
 
   const handleStartChat = () => {
     // 사용자 입력 정보로 새 채팅방 생성
     console.log('Username:', name);
-    // 브랜치 아작난거 고치기 위한 push
-    console.log("")
+
+    createChat({
+      name,
+      price,
+      description
+    })
+   navigate("/");
   };
 
   return (
@@ -36,8 +45,8 @@ const CreateChat = () => {
         <ThirdInputField
           type="text"
           placeholder="물건의 특징을 입력해주세요."
-          value={feature}
-          onChange={(e) => setFeature(e.target.value)}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
       </InputContainer>
       <StartButton onClick={handleStartChat}>대화 생성하기</StartButton>
