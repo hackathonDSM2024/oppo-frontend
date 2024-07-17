@@ -7,20 +7,20 @@ import { useNavigate } from 'react-router-dom';
 const CreateChat = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
 
 
   const handleStartChat = () => {
     // 사용자 입력 정보로 새 채팅방 생성
-    console.log('Username:', name);
+    console.log('데이터 똑바로 주나 확인할거임 ㅇㅇ', name, price, description);
 
     createChat({
       name,
       price,
       description
     })
-   navigate("/");
+   navigate("/chatBot");
   };
 
   return (
