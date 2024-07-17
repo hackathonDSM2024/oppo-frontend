@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import StartChatBot from './pages/StartChatBot';
 import Main from './pages/Main';
 import ChatBot from './pages/ChatBot';
+import CreateChat from './pages/CreateChat';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route path='/' element={<StartChatBot />}/>
           <Route path='/main' element={<Main />}/>
           <Route path='/chatBot' element={<ChatBot />}/>
+          <Route path='/createChat' element={<CreateChat />}/>
         </Routes>
       </BrowserRouter>
     </>
