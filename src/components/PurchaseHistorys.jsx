@@ -1,13 +1,18 @@
 import { styled } from "styled-components";
 import { AHistory } from "./AHistory";
-import { useId } from "react";
+import { Link } from "react-router-dom";
 
 const PurchaseHistorys = ({histories}) => {
   return (
     <Container>
-      {histories.map((history) => (
-        <AHistory Id={history.id} State={history.type} ProductName={history.name} Price={history.price} />
-      ))}
+      {histories.map((history) => 
+        history.type.purchaseType === "DIRECT" ?
+          <AHistory Id={history.chatId} State={history.type.purchaseType} ProductName={history.name} Price={history.price} />
+          :
+          <Link to={`/chatBot/${history.chatId}`}>
+            <AHistory Id={history.chatId} State={history.type.purchaseType} ProductName={history.name} Price={history.price} /> 
+          </Link>
+      )}
     </Container>
   );
 };

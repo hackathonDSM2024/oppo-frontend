@@ -1,12 +1,22 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { MyChat } from "../components/MyChat";
 import { AIChat } from "../components/AIChat";
+import { GetChatById } from "../service/net/getChatById"
+import { PostChatById } from "../service/net/postChatById"
+import { useLocation, useNavigate } from "react-router-dom";
+import { DeleteChatById } from "../service/net/deleteChatById"
 
 const ChatBot = () => {
-  const textRef = useRef(null);
+  const [chatList, setChatList] = useState([]);
+  const [input, setInput] = useState("")
+  const navigate = useNavigate()
 
-  useEffect(() => {
+  const textRef = useRef(null);
+  const location = useLocation();
+  const chatBotId = location.pathname.split("/chatBot/")[1];
+
+  const controllTextFiled = () => {
     const textArea = textRef.current;
 
     const handleInput = () => {
@@ -37,36 +47,91 @@ const ChatBot = () => {
       textArea.removeEventListener("keydown", handleKeyDown);
       textArea.removeEventListener("blur", handleBlur);
     };
+  }
+
+  const getChat = () => {
+    GetChatById({ id: chatBotId })
+    .then((data) => {
+      data.chats.splice(0, 2)
+      setChatList(data.chats)
+    })
+    .catch((err) => {
+      alert(err)
+    })
+  }
+
+  const getPoint = (s) => {
+    console.log(s.match(/기회비용 점수\s*:\s*<(\d+)>\/100/)[1])
+  }
+
+  const getUserInput = (s) => {
+    return s.match(/입력:\s*(.*)/)[1]
+  }
+
+  const handleInput = (e) => {
+    if (!e.target.value) {
+      return
+    }
+
+    setInput(e.target.value)
+  }
+
+  const handleSendChat = () => {
+    PostChatById({ id: chatBotId, content: input })
+    .then(() => {
+      getChat()
+    })
+  }  
+
+  const handleEndChat = (type) => {
+    switch(type) {
+    case "CHAT_PURCHASE":
+      DeleteChatById({
+        id: chatBotId,
+        type: "CHAT_PURCHASE"
+      })
+      .then(() => navigate("/"))
+      .catch((err) => alert(err))
+      return;
+    case "CHAT_GIVE_UP":
+      DeleteChatById({
+        id: chatBotId,
+        type: "CHAT_GIVE_UP"
+      })
+      .then(() => navigate("/"))
+      .catch((err) => alert(err))
+      return;
+    }
+    setInput("")
+  }
+
+  useEffect(() => {
+    controllTextFiled()
+    getChat()
   }, []);
 
   return (
     <Container>
       <ChatterBox>
-        <Title>맥북 프로 14</Title>
+        {/* <Title>맥북 프로 14</Title> */}
         <ChattingBox>
           <ChatBox>
-            <MyChat
-              contents={`물건 기본 정보\n물건 이름: 맥북 프로 14\n가격: 100,000원\n특징: 비쌈, 개발하기 좋음`}
-            />
-            <MyChat
-              contents={`맥북은 소프트웨어 개발에 있어 매우 유용한 도구입니다. 특히 iOS
-              개발에 관심이 있거나 유닉스 기반 환경을 선호한다면 좋은 선택이 될
-              수 있습니다. 그러나 예산과 필요 사항을 고려해 윈도우나 리눅스
-              노트북도 좋은 대안이 될 수 있습니다. 학교에서 요구하는 사항이나
-              친구들이 추천하는 이유를 좀 더 구체적으로 알아보고, 예산과 필요에
-              맞는 최적의 선택을 하시길 바랍니다.`}
-            />
-            <AIChat
-              contents={`맥북은 소프트웨어 개발에 있어 매우 유용한 도구입니다. 특히 iOS 개발에 관심이 있거나 유닉스 기반 환경을 선호한다면 좋은 선택이 될 수 있습니다. 그러나 예산과 필요 사항을 고려해 윈도우나 리눅스 노트북도 좋은 대안이 될 수 있습니다. 학교에서 요구하는 사항이나 친구들이 추천하는 이유를 좀 더 구체적으로 알아보고, 예산과 필요에 맞는 최적의 선택을 하시길 바랍니다.
-맥북은 소프트웨어 개발에 있어 매우 유용한 도구입니다. 특히 iOS 개발에 관심이 있거나 유닉스 기반 환경을 선호한다면 좋은 선택이 될 수 있습니다. 그러나 예산과 필요 사항을 고려해 윈도우나 리눅스 노트북도 좋은 대안이 될 수 있습니다. 학교에서 요구하는 사항이나 친구들이 추천하는 이유를 좀 더 구체적으로 알아보고, 예산과 필요에 맞는 최적의 선택을 하시길 바랍니다.
-맥북은 소프트웨어 개발에 있어 매우 유용한 도구입니다. 특히 iOS 개발에 관심이 있거나 유닉스 기반 환경을 선호한다면 좋은 선택이 될 수 있습니다. 그러나 예산과 필요 사항을 고려해 윈도우나 리눅스 노트북도 좋은 대안이 될 수 있습니다. 학교에서 요구하는 사항이나 친구들이 추천하는 이유를 좀 더 구체적으로 알아보고, 예산과 필요에 맞는 최적의 선택을 하시길 바랍니다.`}
-            />
+            {chatList.map((chat) => (
+              chat.type === "system" || chat.type === "assistant" ? 
+                <AIChat contents={chat.content}/> 
+                : 
+                <MyChat contents={getUserInput(chat.content.replace("아래 형식으로 출력해줘", ""))}/>
+            ))}
+            <Buttons>
+              <Purchase onClick={() => handleEndChat("CHAT_PURCHASE")}>구매하기</Purchase>
+              <Giveup onClick={() => handleEndChat("CHAT_GIVE_UP")}>포기하기</Giveup>
+            </Buttons>
           </ChatBox>
         </ChattingBox>
       </ChatterBox>
       <Answer>
-        <Text ref={textRef} />
-        <Button>send</Button>
+        <Text ref={textRef} onChange={handleInput}/>
+        <Button onClick={handleSendChat}>send</Button>
       </Answer>
     </Container>
   );
@@ -90,7 +155,7 @@ const Text = styled.textarea`
   border-radius: 4px;
   padding: 10px 25px;
   resize: none;
-  overflow: auto;
+  overflow: scroll;
 `;
 
 const Button = styled.button`
@@ -112,10 +177,11 @@ const Answer = styled.div`
 `;
 
 const ChatterBox = styled.div`
-  width: 56.67vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
+  padding: 0 0 100px 0;
 `;
 
 const Title = styled.p`
@@ -124,6 +190,7 @@ const Title = styled.p`
   font-weight: 600;
   position: sticky;
   top: 7.9vh;
+  z-index: 99;
 `;
 
 const ChattingBox = styled.div`
@@ -140,6 +207,37 @@ const ChatBox = styled.div`
   align-items: end;
   flex-direction: column;
   gap: 30px;
+  margin-top: 80px;
 `;
+
+const Buttons = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
+const Purchase = styled.button`
+  width: 92px;
+  height: 50px;
+  border: 1px solid #4a68d9;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 4px;
+  background-color: #4a68d9;
+  cursor: pointer;
+`;
+
+const Giveup = styled.button`
+  width: 91px;
+  height: 50px;
+  border: 1px solid #3443be;
+  color: #3443be;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+`;
+
 
 export default ChatBot;

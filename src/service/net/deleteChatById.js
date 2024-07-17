@@ -2,7 +2,9 @@ import { http } from "../../util/net"
 
 export const DeleteChatById = ({ id, type }) => {
     return http.delete(`/chat/${id}`, {
-        type
+        data: {
+            type
+        }
     }).then((res) => {
         return res.data
     })

@@ -14,10 +14,7 @@ export const AIChat = ({ contents }) => {
       <Profiled src={Profile} />
       <ContentContain>
         <Content>{formattedContents}</Content>
-        <Buttons>
-          <Purchase>구매하기</Purchase>
-          <Giveup>포기하기</Giveup>
-        </Buttons>
+        
       </ContentContain>
     </Container>
   );
@@ -50,31 +47,3 @@ const Content = styled.p`
   letter-spacing: -0.5px;
 `;
 
-const Buttons = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-
-const Purchase = styled.button`
-  width: 92px;
-  height: 50px;
-  border: 1px solid #4a68d9;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: 4px;
-  background-color: #4a68d9;
-  cursor: pointer;
-`;
-
-const Giveup = styled.button`
-  width: 91px;
-  height: 50px;
-  border: 1px solid #3443be;
-  color: #3443be;
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: 4px;
-  background-color: #fff;
-  cursor: pointer;
-`;

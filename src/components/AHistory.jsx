@@ -7,7 +7,14 @@ export const AHistory = ({ Id, State, ProductName, Price }) => {
       <ItemBox>
         <ItemName>{ProductName}</ItemName>
         <ItemPrice>| {Price}</ItemPrice>
-        <Record State={State}>{State}</Record>
+        <Record State={State}>
+          {State === "CHAT_GIVE_UP"
+            ? "챗봇 포기"
+            : State === "CHAT_PURCHASE"
+            ? "챗봇 구매"
+            : "직접 입력"
+            }
+        </Record>
       </ItemBox>
       <HistoryDate>2024.07.18 12:34</HistoryDate>
     </Container>
